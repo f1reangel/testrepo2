@@ -9,3 +9,6 @@ for item in arr:
 
         lost = ...
 
+str(arr)
+
+print(5+5)
