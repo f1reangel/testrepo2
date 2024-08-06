@@ -1,0 +1,37 @@
+name: Check Push Success
+
+on:
+  push:
+    branches:
+      - main  # Змініть на вашу основну гілку, якщо необхідно
+
+jobs:
+  check-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Git
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'actions@github.com'
+
+      - name: Get the commit status
+        id: get_status
+        run: |
+          # Get the list of commits in the push
+          commits=$(git log --format=%H --not --remotes --no-merges)
+          for commit in $commits; do
+            # Fetch commit status
+            status=$(gh api /repos/${{ github.repository }}/commits/$commit/status | jq -r '.state')
+            echo "Commit $commit status: $status"
+            if [ "$status" != "success" ]; then
+              echo "Commit $commit did not succeed."
+              exit 1
+            fi
+          done
+
+      - name: Success message
+        if: ${{ success() }}
+        run: echo "All commits in the push have succeeded."
