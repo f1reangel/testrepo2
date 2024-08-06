@@ -7,3 +7,5 @@ for item in arr:
     if item==arr[0]:
         print(item)
 
+        lost = ...
+
