@@ -11,3 +11,4 @@ for item in arr:
 
 str(arr)
 
+print(5+5)
