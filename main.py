@@ -9,3 +9,5 @@ for item in arr:
 
         lost = ...
 
+str(arr)
+
